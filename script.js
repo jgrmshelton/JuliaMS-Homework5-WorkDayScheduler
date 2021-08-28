@@ -45,3 +45,22 @@ $(document).on("search", function () {
         }
     }
 })
+
+$(".saveBtn").click(function () {
+    dateText = $(this).parent('div').children('div').children('textarea').val();
+    apptTime = $(this).parent('div').parent().attr("id");
+    appts = {
+        time: apptTime,
+        details: dateText
+    }
+    dateArray = JSON.parse(localStorage.getItem("appts"));
+    if (dateArray === null) {
+        localStorage.setItem('appts', JSON.stringify([{ time: apptTime, details: dateText }]));
+    }
+    else {
+        dateArray.push(appt);
+        localStorage.setItem("appts", JSON.stringify(dateArray));
+
+    }
+    $(this).parent('div').children('div').children('textarea').replaceWith($('<textarea>' + appointText.addClass("textarea") + '</textarea>'));
+})
