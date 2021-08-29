@@ -1,4 +1,3 @@
-var 
 var todayDate = moment().format("HR");
 var todayDateInt = parseInt(todayDate);
 var saveBtn = $(".saveBtn");
@@ -41,31 +40,22 @@ $(document).ready(function () {
         }
     }
 
-    saveBtn.on("saveSquare", function () {
-        $(this).addClass('hover');
-    });
+    saveBtn.on("click", function () {
 
-    saveBtn.on("dkwhattocallthis", function () {
-        $(this).removeClass('hover');
-    });
-
-
-    //  BUTTON CLICK
-
-    saveBtn.on("click", function (
-
-    ) {
         // set a variable to select the clicked-on-button's data-hour attribute which we set in the HTML
-        var hour = $(this).attr("data-hour");
+        var hour = $(this).siblings(".hour").text()
+      
 
         // set a variable to select the value of the user's "plan" (input) at a particular hour
-        var plan = $("#" + hour + "Row").val();
+        var plan = $(this).siblings("textarea").val()
+      
+        // var plan = $("#" + hour + "Row").val();
 
         // save the hour's plan to local storage
         localStorage.setItem(hour, plan);
 
-    });
 
+    });
 
     //  Function to retrieve stored user inputs from local storage and populate the hour's input value with them
     function renderSchedule() {
