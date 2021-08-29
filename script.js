@@ -1,66 +1,78 @@
-var currentDate;
-var dateText = "";
-var apptTime = "";
-var time;
-var today;
-var dateArray = [];
-var storedCal;
-var returnedCal;
+var todayDate = moment().format("HR");
+var todayDateInt = parseInt(todayDate);
+var saveBtn = $(".saveBtn");
 
-$(document).on("search", function () {
-    currentDate = moment().format("dddd MMM Do YYYY")
-    $("#currentDay").append(today);
-    time = moment().fomat("hr");
+$("#8AM").attr("date-time", moment("8:00 AM", "h:mm a").format("HR"));
+$("#9AM").attr("date-time", moment("9:00 AM", "h:mm a").format("HR"));
+$("#10AM").attr("date-time", moment("10:00 AM", "h:mm a").format("HR"));
+$("#11AM").attr("date-time", moment("11:00 AM", "h:mm a").format("HR"));
+$("#12PM").attr("date-time", moment("12:00 PM", "h:mm a").format("HR"));
+$("#1PM").attr("date-time", moment("1:00 PM", "h:mm a").format("HR"));
+$("#2PM").attr("date-time", moment("2:00 PM", "h:mm a").format("HR"));
+$("#3PM").attr("date-time", moment("3:00 PM", "h:mm a").format("HR"));
+$("#4PM").attr("date-time", moment("4:00 PM", "h:mm a").format("HR"));
+$("#5PM").attr("date-time", moment("5:00 PM", "h:mm a").format("HR"));
 
-    function renderSchedule() {
-        storedCal = JSON.parse(localStorage.getItem("appts"));
-        if (storedCal !== 0) {
-            for (i = 0; i < storedCal.length; i++) {
-                returnedCal = storedCal[i];
-                details = returnedCal.details;
-                timeIndex = returnedCal.time;
-                timeIndex = timeIndex.replace(":00",'');
-                if (details !== null) {
-                    $("#" + timeIndex).children("div").children("div").children("textarea").val(details);
-                }
-            }
-        }
-    }
-
+$(document).ready(function () {
     renderSchedule();
 
-    for (i = 0; i <= 23; i++) {
-        todayContainer = i;
-        if (time == i) {
-            $('#' + todayContainer).addClass("present");
-            $('#' + todayContainer).children('div').children('div').children("textarea").addClass("present");
-        }
-        else if (time > i) {
-            $('#' + todayContainer).addClass("past");
-            $('#' + todayContainer).children('div').children('div').children("textarea").addClass("past");
-        }
-        else {
-            $('#' + todayContainer).addClass("future");
-            $('#' + todayContainer).children('div').children('div').children("textarea").addClass("future");
-        }
-    }
-})
+    var currentDay = moment().format("dddd, MMMM Do");
+    $("#currentDay").text(currentDay);
 
-$(".saveBtn").click(function () {
-    dateText = $(this).parent('div').children('div').children('textarea').val();
-    apptTime = $(this).parent('div').parent().attr("id");
-    appts = {
-        time: apptTime,
-        details: dateText
-    }
-    dateArray = JSON.parse(localStorage.getItem("appts"));
-    if (dateArray === null) {
-        localStorage.setItem('appts', JSON.stringify([{ time: apptTime, details: dateText }]));
-    }
-    else {
-        dateArray.push(appt);
-        localStorage.setItem("appts", JSON.stringify(dateArray));
+    for (var i = 1; i <+ 12; i++) {
+        var inputTime = $("#" + i +"row").attr("data-time");
+        var inputTimeInt = parseInt(inputTime);
+        console.log(inputTimeInt);
 
+        if (todayDateInt === inputTimeInt) {
+            $("#" + i + "row").addClass("present");
+
+        }
+
+        if (todayDateInt === inputTimeInt) {
+            $("#" + i + "row").addClass("past");
+
+        }
+
+        if (todayDateInt === inputTimeInt) {
+            $("#" + i + "row").addClass("future");
+
+        }
     }
-    $(this).parent('div').children('div').children('textarea').replaceWith($('<textarea>' + appointText.addClass("textarea") + '</textarea>'));
-})
+
+    saveBtn.on("saveSquare", function () {
+        $(this).addClass('hover');
+    });
+
+    saveBtn.on("dkwhattocallthis", function () {
+        $(this).removeClass('hover');
+    });
+
+
+    //  BUTTON CLICK
+
+    saveBtn.on("click", function () {
+        // set a variable to select the clicked-on-button's data-hour attribute which we set in the HTML
+        var hour = $(this).attr("data-hour");
+
+        // set a variable to select the value of the user's "plan" (input) at a particular hour
+        var plan = $("#" + hour + "Row").val();
+
+        // save the hour's plan to local storage
+        localStorage.setItem(hour, plan);
+
+    });
+
+
+    //  Function to retrieve stored user inputs from local storage and populate the hour's input value with them
+    function renderSchedule() {
+        // hours - 12 hrs to account for
+        // starts at 1 because 1 is the lowest hour
+        for (var i = 1; i <= 12; i++) {
+            // select the 
+            $("#" + i + "Row").val(localStorage.getItem(i));
+        }
+    }
+
+
+});
