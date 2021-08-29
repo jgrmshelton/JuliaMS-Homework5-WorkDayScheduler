@@ -1,3 +1,4 @@
+var 
 var todayDate = moment().format("HR");
 var todayDateInt = parseInt(todayDate);
 var saveBtn = $(".saveBtn");
@@ -51,7 +52,9 @@ $(document).ready(function () {
 
     //  BUTTON CLICK
 
-    saveBtn.on("click", function () {
+    saveBtn.on("click", function (
+
+    ) {
         // set a variable to select the clicked-on-button's data-hour attribute which we set in the HTML
         var hour = $(this).attr("data-hour");
 
